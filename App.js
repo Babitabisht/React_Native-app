@@ -8,6 +8,8 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TextInput,Button} from 'react-native';
+import ListItem from './src/components/ListItem' ;
+import PlaceList from './src/components/PlaceList'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -18,9 +20,10 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+
 state ={
 placeName:'' ,
-places:[]
+places:[ ]
 
 }
 placeNameChangedHandler = val =>{
@@ -32,6 +35,7 @@ placeNameChangedHandler = val =>{
 }
 
 placeSubmitHandler =() =>{
+
 if(this.state.placeName.trim() === ''){
   return ;
 }
@@ -39,24 +43,34 @@ if(this.state.placeName.trim() === ''){
 this.setState( prevState =>{
 
   return{
-    places:prevState.places.concat(prevState.placeName)
+    places:prevState.places.concat({key:Math.random(), value:prevState.placeName})
   }
+
 }    )
+
+}
+
+placeDeletedHandler = index =>{
+this.setState(prevState =>{
+
+  return {
+    places :prevState.places.filter((place)=>{
+
+      return place.key !== index;
+    })
+  }
+} )
 
 }
 
 
   render() {
 
-const placesOutput=this.state.places.map( place=>{ 
-  <Text>{place}</Text>
-  } )
-
     return (
       <View style={styles.container}>
       <View style={styles.inputContainer}>
 
-      <TextInput 
+      <TextInput
         value={this.state.placeName}
         style={styles.placeInput}
         onChangeText={this.placeNameChangedHandler}
@@ -65,9 +79,12 @@ const placesOutput=this.state.places.map( place=>{
 
         <Button  title="Add"  style={styles.placeButton} onPress={this.placeSubmitHandler} />
 
-         <Text>{ placesOutput }</Text>  
+
       </View>
-        
+      <View  style={styles.listContainer}>
+      <PlaceList  places={this.state.places}  onItemDeleted={this.placeDeletedHandler}  />
+      </View>
+
       </View>
     );
   }
@@ -93,7 +110,11 @@ width:"70%"
   } ,
   placeButton:{
     width:"30%"
+  },
+  listContainer:{
+    width:'100%',
+
   }
 
-  
+
 });
