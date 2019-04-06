@@ -10,6 +10,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TextInput,Button} from 'react-native';
 import ListItem from './src/components/ListItem' ;
 import PlaceList from './src/components/PlaceList'
+import MyImage from './assets/interwork.png'
+import PlaceDetail  from './src/components/PlaceDetail' ;
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -23,10 +25,12 @@ export default class App extends Component<Props> {
 
 state ={
 placeName:'' ,
-places:[ ]
+places:[],
+selectedPlace: null,
+
 
 }
-placeNameChangedHandler = val =>{
+placeNameChangedHandler = val => {
 
  this.setState({
    placeName:val
@@ -43,23 +47,54 @@ if(this.state.placeName.trim() === ''){
 this.setState( prevState =>{
 
   return{
-    places:prevState.places.concat({key:Math.random(), value:prevState.placeName})
+    places:prevState.places.concat(
+
+    {
+      key:Math.random(),
+      placeName:prevState.placeName,
+      placeImage:{
+      uri:'https://udemy-images.udemy.com/course/750x422/1589310_8f97.jpg'
+    }
+    })
   }
 
 }    )
 
 }
 
-placeDeletedHandler = index =>{
-this.setState(prevState =>{
+placeSelectedHandler = key =>{
+alert(`key ${key}`)
+  this.setState(prevState =>{
+    return {
+      selectedPlace:prevState.places.find( place=>{
+        return place.key === key
+      }  )
+    }
 
-  return {
-    places :prevState.places.filter((place)=>{
 
-      return place.key !== index;
-    })
-  }
-} )
+
+  })
+
+}
+modalClosed=()=>{
+ this.setState(
+    {selectedPlace:null}
+  )
+}
+onItemDelete =()=>{
+  alert('Item closed ')
+
+  this.setState(prevState =>{
+
+    return {
+      places :prevState.places.filter((place)=>{
+
+        return place.key !== prevState.selectedPlace.key;
+      }),
+      selectedPlace:null
+    }
+
+  } )
 
 }
 
@@ -69,6 +104,14 @@ this.setState(prevState =>{
     return (
       <View style={styles.container}>
       <View style={styles.inputContainer}>
+
+      <PlaceDetail selectedPlace={this.state.selectedPlace}
+
+      onModalClosed={this.modalClosed}
+      onItemDelete={this.onItemDelete}
+
+
+      />
 
       <TextInput
         value={this.state.placeName}
@@ -80,9 +123,10 @@ this.setState(prevState =>{
         <Button  title="Add"  style={styles.placeButton} onPress={this.placeSubmitHandler} />
 
 
+
       </View>
       <View  style={styles.listContainer}>
-      <PlaceList  places={this.state.places}  onItemDeleted={this.placeDeletedHandler}  />
+      <PlaceList  places={this.state.places}  onItemSelected={this.placeSelectedHandler}  />
       </View>
 
       </View>
