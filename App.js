@@ -12,6 +12,8 @@ import ListItem from './src/components/ListItem' ;
 import PlaceList from './src/components/PlaceList'
 import MyImage from './assets/interwork.png'
 import PlaceDetail  from './src/components/PlaceDetail' ;
+import {connect} from 'react-redux' ;
+import {addPlace , deletePlace , selectedPlace , deselectPlace} from './src/store/actions/index';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -21,15 +23,8 @@ const instructions = Platform.select({
 });
 
 type Props = {};
-export default class App extends Component<Props> {
+class App extends Component<Props> {
 
-state ={
-placeName:'' ,
-places:[],
-selectedPlace: null,
-
-
-}
 placeNameChangedHandler = val => {
 
  this.setState({
@@ -162,3 +157,24 @@ width:"70%"
 
 
 });
+
+
+const mapStateToProps = state =>{
+  return {
+    places :state.place.places,
+    selectedPlace:state.places.selectedPlace
+  }
+}
+
+
+const mapDispatchToProps =dispatch =>{
+  return {
+onAddPlace : ()=>dispatch(addPlace(name)),
+onDeletePlace :()=> dispatch(deletePlace()),
+selectedPlace :()=>dispatch(selectedPlace(key)),
+onDeselectPlace: ()=>dispatch(deselectPlace())
+  }
+}
+
+export default connect( mapStateToProps ,mapDispatchToProps )(App)
+
