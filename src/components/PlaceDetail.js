@@ -6,13 +6,14 @@ const placeDetail = props =>{
     let modalContent=null ;
 
     if(props.selectedPlace){
-       modalContent=( <View >
-            <Image  source={props.selectedPlace.placeImage}   style={styles.placeImage} />
-<Text  style={styles.placeName}   >
-{props.selectedPlace.placeName}
+       modalContent=(
 
-</Text>
- </View>
+    <View >
+        <Image  source={props.selectedPlace.image}   style={styles.placeImage} />
+        <Text  style={styles.placeName}   >
+          {props.selectedPlace.name}
+        </Text>
+    </View>
         )
 
     }
@@ -23,9 +24,9 @@ return (
 
 onRequestClose={() => {
 
+     Alert.alert(`hello ${props.selectedPlace !== null}`)
 
-            Alert.alert('please touch the close button')
-          }}
+     }}
     >
 
 <View style={styles.modalContainer} >
@@ -56,7 +57,7 @@ modalContainer :{
 },
 placeImage:{
     height:200,
-    width:200
+    width:"100%"
 },
 placeName:{
     fontWeight:"bold" ,

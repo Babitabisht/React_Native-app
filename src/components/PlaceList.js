@@ -13,8 +13,8 @@ const placeList =props =>{
         data={props.places}
         renderItem={(info)=>(
       <ListItem
-       placeName={info.item.placeName}
-       placeImage={info.item.placeImage}
+       placeName={info.item.name}
+       placeImage={info.item.image}
         onItemPressed={ ()=> props.onItemSelected(info.item.key )  } />
 
         )  }

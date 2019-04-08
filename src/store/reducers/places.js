@@ -1,5 +1,4 @@
 import { ADD_PLACE, DELETE_PLACE, SELECT_PLACE, UNSELECT_PLACE } from "../actions/actionTypes";
-import { stat } from "fs";
 
 const initialState={
 
@@ -18,9 +17,10 @@ const reducer=(state =initialState, action)=>{
 
                 {
                   key:Math.random(),
-                  placeName:state.placeName,
-                  placeImage:{
-                  uri:'https://udemy-images.udemy.com/course/750x422/1589310_8f97.jpg'
+                  name:action.placeName,
+                  image:{
+                  uri:
+                  'https://udemy-images.udemy.com/course/750x422/1589310_8f97.jpg'
                 }
                 })
         }
@@ -37,7 +37,7 @@ const reducer=(state =initialState, action)=>{
         return {
             ...state,
             selectedPlace:state.places.find( place=>{
-                return place.key === action.key
+                return place.key === action.placeKey
               }  )
         }
 
