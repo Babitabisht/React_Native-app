@@ -30,6 +30,7 @@ class App extends Component<Props> {
     }
 placeNameChangedHandler = val => {
 
+
  this.setState({
    placeName:val
  })
