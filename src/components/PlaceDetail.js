@@ -1,5 +1,6 @@
 import React from 'react' ;
-import {  Modal , View , Image ,Text ,Button ,StyleSheet,Alert } from 'react-native' ;
+import {  Modal , View , Image ,Text ,Button ,StyleSheet,Alert , TouchableOpacity } from 'react-native' ;
+import Icon from 'react-native-vector-icons/Ionicons' ;
 
 const placeDetail = props =>{
 
@@ -33,8 +34,12 @@ onRequestClose={() => {
 {modalContent
 }
 <View>
+<TouchableOpacity    onPress={props.onItemDelete}>
+<View  style={styles.deleteButton}>
+  <Icon size={40} name="ios-trash" color="red" />
+</View>
 
-<Button  title="delete" color="red"  onPress={props.onItemDelete} />
+</TouchableOpacity>
 
 <Button   title="close"   onPress={props.onModalClosed} />
 
@@ -63,6 +68,9 @@ placeName:{
     fontWeight:"bold" ,
     textAlign:"center" ,
     fontSize:28
+},
+deleteButton :{
+alignItems:'center'
 }
 
 })
